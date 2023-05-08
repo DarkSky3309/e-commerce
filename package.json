@@ -1,8 +1,8 @@
 {
   "name": "e-commerce",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "e-commerce based on amazon",
+  "author": "IGOR SHEVCHENKO",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -23,6 +23,8 @@
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@prisma/client": "^4.13.0",
+    "prisma": "^4.13.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },
