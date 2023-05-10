@@ -1,7 +1,8 @@
 import {
   BadRequestException,
-  Injectable, NotFoundException,
-  UnauthorizedException
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { AuthDto } from './dto/auth.dto';
