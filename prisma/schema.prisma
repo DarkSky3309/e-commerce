@@ -18,9 +18,10 @@ model User {
   name       String? @unique
   avatarPath String  @default("uploads/default-avatar.png") @map("avatar_path")
 
-  phone   String   @default("")
-  order   Order[]
-  reviews Review[]
+  phone     String    @default("")
+  order     Order[]
+  reviews   Review[]
+  favorits Product[]
 }
 
 model Product {
@@ -39,6 +40,8 @@ model Product {
 
   category   Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?      @map("category_id")
+  user       User?     @relation(fields: [userId], references: [id])
+  userId     Int?      @map("user_id")
 }
 
 model Category {
@@ -46,7 +49,7 @@ model Category {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  name    String    @unique
+  name String @unique
 
   product Product[]
 }
