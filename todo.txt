@@ -1,1 +1,4 @@
 [] - make the logic of getting the user out of the auth service
+[] - get profile
+[] - toggle favorite
+[] - update profile
