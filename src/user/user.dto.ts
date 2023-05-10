@@ -2,6 +2,7 @@ import { IsEmail, IsOptional, IsString } from 'class-validator';
 
 export class UserDto {
   id: number;
+  @IsOptional()
   @IsString()
   name: string;
   @IsEmail()
@@ -9,6 +10,7 @@ export class UserDto {
   @IsString()
   @IsOptional()
   password?: string;
+  @IsOptional()
   @IsString()
   avatarPath: string;
   @IsString()

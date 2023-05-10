@@ -5,7 +5,6 @@ import {
   HttpCode,
   Param,
   Patch,
-  Post,
   Put,
   UsePipes,
   ValidationPipe,
@@ -21,8 +20,8 @@ export class UserController {
 
   @Get('profile')
   @AuthDecorator()
-  async getProfile(@CurrentUser('id') userId: number) {
-    return this.userService.getProfile(userId);
+  async getProfile(@CurrentUser('id') id: number) {
+    return this.userService.getProfile(id);
   }
 
   @UsePipes(new ValidationPipe())
@@ -32,7 +31,6 @@ export class UserController {
     return this.userService.updateProfile(id, dto);
   }
 
-  @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @AuthDecorator()
   @Patch('profile/favorits/:productId')
@@ -40,6 +38,6 @@ export class UserController {
     @Param('productId') ProductId: string,
     @CurrentUser('id') userId: number
   ) {
-    return this.userService.toggleFavorits(userId, ProductId);
+    return this.userService.toggleFavorits(userId, +ProductId);
   }
 }
