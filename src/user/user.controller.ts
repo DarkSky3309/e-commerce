@@ -43,12 +43,12 @@ export class UserController {
 
   @HttpCode(200)
   @AuthDecorator()
-  @Patch('profile/favorits/:productId')
-  async toggleFavorits(
+  @Patch('profile/favorites/:productId')
+  async toggleFavorites(
     @Param('productId') ProductId: string,
     @CurrentUser('id') userId: number
   ) {
-    return this.userService.toggleFavorits(
+    return this.userService.toggleFavorites(
       userId,
       +ProductId
     );

@@ -60,7 +60,7 @@ export class UserService {
     });
   }
 
-  async toggleFavorits(
+  async toggleFavorites(
     userId: number,
     productId: number
   ) {
@@ -84,6 +84,6 @@ export class UserService {
         },
       },
     });
-    return 'Success';
+    return { message: 'Success' };
   }
 }
