@@ -19,12 +19,21 @@ export class AuthService {
   ) {}
 
   async getNewTokens(refreshToken: string) {
-    const result = await this.jwtService.verifyAsync(refreshToken);
-    if (!result) throw new UnauthorizedException('Invalid token');
-    const user = await this.prismaService.user.findUnique({
-      where: { id: result.id },
-    });
-    const tokens = await this.generateToken(user.id);
+    const result =
+      await this.jwtService.verifyAsync(
+        refreshToken
+      );
+    if (!result)
+      throw new UnauthorizedException(
+        'Invalid token'
+      );
+    const user =
+      await this.prismaService.user.findUnique({
+        where: { id: result.id },
+      });
+    const tokens = await this.generateToken(
+      user.id
+    );
     return {
       user: this.returnUserFields(user),
       ...tokens,
@@ -33,7 +42,9 @@ export class AuthService {
 
   async login(dto: AuthDto) {
     const user = await this.validateUser(dto);
-    const tokens = await this.generateToken(user.id);
+    const tokens = await this.generateToken(
+      user.id
+    );
     return {
       user: this.returnUserFields(user),
       ...tokens,
@@ -41,23 +52,31 @@ export class AuthService {
   }
 
   async register(dto: AuthDto) {
-    const oldUser = await this.prismaService.user.findUnique({
-      where: { email: dto.email },
-    });
+    const oldUser =
+      await this.prismaService.user.findUnique({
+        where: { email: dto.email },
+      });
     if (oldUser) {
-      throw new BadRequestException('User already exists');
+      throw new BadRequestException(
+        'User already exists'
+      );
     }
 
-    const user = await this.prismaService.user.create({
-      data: {
-        email: dto.email,
-        name: faker.name.firstName(),
-        avatarPath: faker.image.avatar(),
-        phone: faker.phone.number('+380(##)###-##-##'),
-        password: await hash(dto.password),
-      },
-    });
-    const tokens = await this.generateToken(user.id);
+    const user =
+      await this.prismaService.user.create({
+        data: {
+          email: dto.email,
+          name: faker.name.firstName(),
+          avatarPath: faker.image.avatar(),
+          phone: faker.phone.number(
+            '+380(##)###-##-##'
+          ),
+          password: await hash(dto.password),
+        },
+      });
+    const tokens = await this.generateToken(
+      user.id
+    );
     return {
       user: this.returnUserFields(user),
       ...tokens,
@@ -66,13 +85,19 @@ export class AuthService {
 
   private async generateToken(userId: number) {
     const data = { id: userId };
-    const accessToken = this.jwtService.sign(data, {
-      expiresIn: '1h',
-    });
+    const accessToken = this.jwtService.sign(
+      data,
+      {
+        expiresIn: '1h',
+      }
+    );
 
-    const refreshToken = this.jwtService.sign(data, {
-      expiresIn: '30d',
-    });
+    const refreshToken = this.jwtService.sign(
+      data,
+      {
+        expiresIn: '30d',
+      }
+    );
     return { accessToken, refreshToken };
   }
 
@@ -84,15 +109,23 @@ export class AuthService {
   }
 
   private async validateUser(dto: AuthDto) {
-    const user = await this.prismaService.user.findUnique({
-      where: { email: dto.email },
-    });
+    const user =
+      await this.prismaService.user.findUnique({
+        where: { email: dto.email },
+      });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException(
+        'User not found'
+      );
     }
-    const isPasswordValid = await verify(user.password, dto.password);
+    const isPasswordValid = await verify(
+      user.password,
+      dto.password
+    );
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid password');
+      throw new UnauthorizedException(
+        'Invalid password'
+      );
     }
     return user;
   }

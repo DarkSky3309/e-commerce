@@ -13,7 +13,9 @@ import { AuthDecorator } from '../decorators/auth.decorator';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService
+  ) {}
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
@@ -32,6 +34,8 @@ export class AuthController {
   @AuthDecorator()
   @Post('login/access-token')
   async getNewToken(@Body() dto: TokenDto) {
-    return this.authService.getNewTokens(dto.refreshToken);
+    return this.authService.getNewTokens(
+      dto.refreshToken
+    );
   }
 }

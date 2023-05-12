@@ -16,19 +16,29 @@ import { UserDto } from './user.dto';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService
+  ) {}
 
   @Get('profile')
   @AuthDecorator()
-  async getProfile(@CurrentUser('id') id: number) {
+  async getProfile(
+    @CurrentUser('id') id: number
+  ) {
     return this.userService.getProfile(id);
   }
 
   @UsePipes(new ValidationPipe())
   @Put('profile')
   @AuthDecorator()
-  async updateProfile(@CurrentUser('id') id: number, @Body() dto: UserDto) {
-    return this.userService.updateProfile(id, dto);
+  async updateProfile(
+    @CurrentUser('id') id: number,
+    @Body() dto: UserDto
+  ) {
+    return this.userService.updateProfile(
+      id,
+      dto
+    );
   }
 
   @HttpCode(200)
@@ -38,6 +48,9 @@ export class UserController {
     @Param('productId') ProductId: string,
     @CurrentUser('id') userId: number
   ) {
-    return this.userService.toggleFavorits(userId, +ProductId);
+    return this.userService.toggleFavorits(
+      userId,
+      +ProductId
+    );
   }
 }
