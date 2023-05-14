@@ -21,7 +21,7 @@ const createProducts = async (quantity: number) => {
         description: faker.commerce.productDescription(),
         price: +faker.commerce.price(10, 999, 0),
         images: Array.from({ length: getRandomNumber(2, 6) }).map(() =>
-          faker.image.imageUrl(),
+          faker.image.imageUrl(500,500),
         ),
         category: {
           create: {
