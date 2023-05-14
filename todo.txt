@@ -1,4 +1,4 @@
 //TODO: make the logic of getting the user out of the auth service
 //TODO: create admin page
 //TODO: create average rating for each product
-//
+//TODO: make total amount of purchased products
