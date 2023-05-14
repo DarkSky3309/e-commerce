@@ -22,7 +22,7 @@ export const generateSlug = (str: string): string => {
   let url: string = str.replace(/[\s]+/gi, '-');
   url = translite(url);
   url = url
-    .replace(/[^0-0a-z_\-]/gi, '')
+    .replace(/[^0-9a-z_\-]/gi, '')
     .replace('---', '-')
     .replace('--', '-')
     .toLowerCase();
