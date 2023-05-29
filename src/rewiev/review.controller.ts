@@ -6,12 +6,12 @@ import { ReviewDto } from './review.dto';
 
 @Controller('reviews')
 export class ReviewController {
-  constructor(private readonly rewievService: ReviewService) {}
+  constructor(private readonly reviewService: ReviewService) {}
 
   @UsePipes(new ValidationPipe())
   @Get()
   async getAll() {
-    return this.rewievService.findAll();
+    return this.reviewService.findAll();
   }
 
   @UsePipes(new ValidationPipe())
@@ -23,6 +23,16 @@ export class ReviewController {
     @Body() dto: ReviewDto,
     @Param('productId') productId: string,
   ) {
-    return this.rewievService.createReview(id, dto, +productId);
+    return this.reviewService.createReview(id, dto, +productId);
+  }
+
+  @Get('average/:productId')
+  async getAverageRating(@Param('productId') productId: string) {
+    return this.reviewService.getAverageRating(+productId);
+  }
+
+  @Get('/:productId')
+  async getReviews(@Param('productId') productId: string) {
+    return this.reviewService.getReviews(+productId);
   }
 }

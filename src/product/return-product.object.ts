@@ -10,6 +10,7 @@ export const returnProductObject: Prisma.ProductSelect = {
   images: true,
   slug: true,
   createdAt: true,
+  category: {select: returnCategoryObject},
 };
 
 export const returnProductWithCateforyAndReviewsObject: Prisma.ProductSelect = {

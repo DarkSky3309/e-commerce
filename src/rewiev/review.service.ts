@@ -54,4 +54,16 @@ export class ReviewService {
       })
       .then((data) => data._avg);
   }
+
+  async getReviews(productId: number) {
+    return this.prismaService.review.findMany({
+      where: {
+        productId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      select: returnReviewObject,
+    });
+  }
 }

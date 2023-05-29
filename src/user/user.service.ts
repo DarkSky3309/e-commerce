@@ -9,27 +9,29 @@ import { hash } from 'argon2';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async getProfile(
-    id: number,
-    selectObject: Prisma.UserSelect = {}
-  ) {
-    const user =
-      await this.prisma.user.findUnique({
-        where: { id },
-        select: {
-          ...UserSelect,
-          favorits: {
-            select: {
-              id: true,
-              name: true,
-              price: true,
-              images: true,
-              slug: true,
+  async getProfile(id: number, selectObject: Prisma.UserSelect = {}) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      select: {
+        ...UserSelect,
+        favorits: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            images: true,
+            slug: true,
+            category: {
+              select: {
+                slug: true,
+              },
             },
+            reviews: true,
           },
-          ...selectObject,
         },
-      });
+        ...selectObject,
+      },
+    });
     if (!user) {
       throw new Error('User not found');
     }
@@ -38,10 +40,9 @@ export class UserService {
   }
 
   async updateProfile(id: number, data: UserDto) {
-    const isSameEmail =
-      await this.prisma.user.findUnique({
-        where: { email: data.email },
-      });
+    const isSameEmail = await this.prisma.user.findUnique({
+      where: { email: data.email },
+    });
     if (isSameEmail && isSameEmail.id !== id) {
       throw new Error('Email already exists');
     }
@@ -53,17 +54,12 @@ export class UserService {
         name: data.name,
         phone: data.phone,
         avatarPath: data.avatarPath,
-        password: data.password
-          ? await hash(data.password)
-          : user.password,
+        password: data.password ? await hash(data.password) : user.password,
       },
     });
   }
 
-  async toggleFavorites(
-    userId: number,
-    productId: number
-  ) {
+  async toggleFavorites(userId: number, productId: number) {
     const user = await this.getProfile(userId);
 
     if (!user) {
@@ -71,7 +67,7 @@ export class UserService {
     }
 
     const isExist = await user.favorits.some(
-      product => product.id === productId
+      (product) => product.id === productId,
     );
 
     await this.prisma.user.update({

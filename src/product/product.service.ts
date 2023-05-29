@@ -18,7 +18,7 @@ export class ProductService {
   ) {}
 
   async getAllProducts(dto: GetAllProductDto = {}) {
-    const { sort, searchTerm } = dto;
+    const { sort, searchTerms } = dto;
 
     const prismaSort: Prisma.ProductOrderByWithRelationInput[] = [];
     if (sort === EnumProductSort.LOW_TO_HIGH) {
@@ -38,40 +38,39 @@ export class ProductService {
         createdAt: 'desc',
       });
     }
-
-    const prismaSearchTermFilter: Prisma.ProductWhereInput = searchTerm
+    const prismaSearchTermFilter: Prisma.ProductWhereInput = searchTerms
       ? {
           OR: [
             {
               category: {
                 name: {
-                  contains: searchTerm,
+                  contains: searchTerms,
                   mode: 'insensitive',
                 },
               },
             },
             {
               name: {
-                contains: searchTerm,
+                contains: searchTerms,
                 mode: 'insensitive',
               },
             },
             {
               description: {
-                contains: searchTerm,
+                contains: searchTerms,
                 mode: 'insensitive',
               },
             },
           ],
         }
       : {};
-
     const { perPage, skip } = this.paginationService.getPagination(dto);
     const products = await this.prismaService.product.findMany({
       where: prismaSearchTermFilter,
       orderBy: prismaSort,
       skip,
       take: perPage,
+      select: returnProductWithCateforyAndReviewsObject
     });
     const total = await this.prismaService.product.count({
       where: prismaSearchTermFilter,

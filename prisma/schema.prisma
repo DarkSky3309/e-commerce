@@ -101,7 +101,7 @@ model Order {
 
 enum EnumOrderStatus {
   PENDING
-  PAYED
+  PAID
   COMPLETED
   CANCELLED
 }
